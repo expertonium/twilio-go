@@ -15,6 +15,8 @@
 package openapi
 
 import (
+	"os"
+
 	twilio "github.com/twilio/twilio-go/client"
 )
 
@@ -24,9 +26,13 @@ type ApiService struct {
 }
 
 func NewApiService(requestHandler *twilio.RequestHandler) *ApiService {
+	baseURL := "https://verify.twilio.com"
+	if value, ok := os.LookupEnv("TWILIO_VERIFYV2_BASE_URL"); ok {
+		baseURL = value
+	}
 	return &ApiService{
 		requestHandler: requestHandler,
-		baseURL:        "https://verify.twilio.com",
+		baseURL:        baseURL,
 	}
 }
 
